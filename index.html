@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SpecSense | Smart Phone Spec Analyzer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="logo">📱 SpecSense</h1>
+      <p class="tagline">Know your phone’s place - instantly.</p>
+    </header>
+
+    <!-- 🔍 Main Spec Input Card -->
+    <div class="card" id="mainCard">
+      <h2>Enter Phone Specs</h2>
+      <label>Battery Power: <span id="battery_power_value">1250</span> mAh</label>
+      <input type="range" id="battery_power" min="501" max="1998" value="1250" oninput="updateValue(this)" />
+            
+      <label>Pixel Height: <span id="px_height_value">960</span> px</label>
+      <input type="range" id="px_height" min="0" max="1960" value="960" oninput="updateValue(this)" />
+            
+      <label>Pixel Width: <span id="px_width_value">1080</span> px</label>
+      <input type="range" id="px_width" min="500" max="1998" value="1080" oninput="updateValue(this)" />
+            
+      <label>RAM: <span id="ram_value">2048</span> MB</label>
+      <input type="range" id="ram" min="256" max="3998" value="2048" oninput="updateValue(this)" />
+
+      <div class="tooltip-container">
+        <button id="predictBtn" onclick="predictPrice()">⚡ Predict Tier</button>
+        <span id="tooltipText" class="tooltip-text">Please complete all fields</span>
+      </div>
+      
+      <!-- 🧠 Prediction Result -->
+      <div id="resultBox" class="fade-in" style="display: none;">
+        <h3 id="result"></h3>
+        <button id="revealBtn" class="soft-btn" onclick="revealMarket()" style="display: none;">
+          ✨ Want to see how it compares in the market?
+        </button>
+      </div>
+    </div>
+    <!-- 🪞 Market Comparison Cards -->
+    <div id="marketSection" class="market-cards hidden">
+      <!-- 3 cards will be populated from JS -->
+      <div class="market-card" id="card1"></div>
+      <div class="market-card" id="card2"></div>
+      <div class="market-card" id="card3"></div>
+    </div>
+
+    <div id="upgradeTipBox" class="suggestion-box fade-in" style="display: none;">
+      <p id="upgradeTip"></p>
+    </div>
+  </div>
+
+  <!-- ⚠️ Validation Modal -->
+  <div id="validationModal" class="modal-overlay" style="display: none;">
+    <div class="modal-box">
+      <h3>Invalid or Missing Information</h3>
+      <p>Please enter values within the valid range for each spec:</p>
+      <ul style="padding-left: 18px; text-align: left;">
+        <li><strong>Battery Power:</strong> 501 – 1998 mAh</li>
+        <li><strong>Pixel Height:</strong> 0 – 1960</li>
+        <li><strong>Pixel Width:</strong> 500 – 1998</li>
+        <li><strong>RAM:</strong> 256 – 3998 MB</li>
+      </ul>
+      
+      <button onclick="closeModal()">OK</button>
+    </div>
+  </div>
+
+
+  <script src="script.js"></script>
+</body>
+</html>
