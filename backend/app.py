@@ -4,6 +4,7 @@ import joblib
 import numpy as np
 from phone_examples import example_phones
 import pandas as pd  # Make sure this is at the top!
+import os  # Required for Render port support
 
 
 app = Flask(__name__)
@@ -89,6 +90,6 @@ def predict():
         print("❌ Error occurred:", str(e))
         return jsonify({"error": str(e)})
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
