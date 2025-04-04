@@ -13,6 +13,87 @@ function updateValue(slider) {
   document.getElementById(valueId).textContent = slider.value;
 }
 
+// function predictPrice() {
+//   const battery_power = parseInt(document.getElementById("battery_power").value);
+//   const px_height = parseInt(document.getElementById("px_height").value);
+//   const px_width = parseInt(document.getElementById("px_width").value);
+//   const ram = parseInt(document.getElementById("ram").value);
+
+//   if (isNaN(battery_power) || isNaN(px_height) || isNaN(px_width) || isNaN(ram)) {
+//     showModal();
+//     return;
+//   }
+
+//   const isValid =
+//   battery_power >= 501 && battery_power <= 1998 &&
+//   px_height >= 0 && px_height <= 1960 &&
+//   px_width >= 500 && px_width <= 1998 &&
+//   ram >= 256 && ram <= 3998;
+
+//   if (!isValid) {
+//     showModal();
+//     return;
+//   }
+
+//   const backendURL =
+//   window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+//     ? "http://127.0.0.1:5000"
+//     : "https://specsense.onrender.com";    
+
+//   fetch(`${backendURL}/predict`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify({
+//       battery_power: battery_power,
+//       px_height: px_height,
+//       px_width: px_width,
+//       ram: ram
+//     })
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//     // Show tier in resultBox
+//     const resultBox = document.getElementById("resultBox");
+//     const resultText = document.getElementById("result");
+//     const revealBtn = document.getElementById("revealBtn");
+
+//     resultText.innerHTML = `<strong>Predicted Price Range:</strong> ${data.predicted_price_range}`;
+//     // Show upgrade suggestion if available
+//     const upgradeTipBox = document.getElementById("upgradeTipBox");
+//     const upgradeTip = document.getElementById("upgradeTip");
+
+//     if (data.upgrade_tip) {
+//       // Keep line breaks
+//       upgradeTip.innerHTML = `<span style="white-space: pre-line;">💡 ${data.upgrade_tip}</span>`;
+//       upgradeTipBox.style.display = "block";
+    
+//       latestSuggestion = null; // No single upgrade to apply anymore
+//     } else {
+//       upgradeTipBox.style.display = "none";
+//       latestSuggestion = null;
+//     }
+    
+//     resultBox.style.display = "block";
+//     revealBtn.style.display = "inline-block";
+
+//     // Store full response
+//     latestData = data;
+
+//     // Reset market cards if they were shown before
+//     document.getElementById("marketSection").classList.add("hidden");
+//     document.querySelectorAll('.market-card').forEach(card => {
+//       card.innerHTML = "";
+//       card.classList.remove("flip-in");
+//     });
+//   })
+//   .catch(error => {
+//     console.error("Prediction error:", error);
+//     document.getElementById("result").innerText = "Something went wrong.";
+//   });
+// }
+
 function predictPrice() {
   const battery_power = parseInt(document.getElementById("battery_power").value);
   const px_height = parseInt(document.getElementById("px_height").value);
@@ -25,10 +106,10 @@ function predictPrice() {
   }
 
   const isValid =
-  battery_power >= 501 && battery_power <= 1998 &&
-  px_height >= 0 && px_height <= 1960 &&
-  px_width >= 500 && px_width <= 1998 &&
-  ram >= 256 && ram <= 3998;
+    battery_power >= 501 && battery_power <= 1998 &&
+    px_height >= 0 && px_height <= 1960 &&
+    px_width >= 500 && px_width <= 1998 &&
+    ram >= 256 && ram <= 3998;
 
   if (!isValid) {
     showModal();
@@ -36,9 +117,12 @@ function predictPrice() {
   }
 
   const backendURL =
-  window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
-    ? "http://127.0.0.1:5000"
-    : "https://specsense.onrender.com";    
+    window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+      ? "http://127.0.0.1:5000"
+      : "https://specsense.onrender.com";
+
+  // 🌀 Show Spinner
+  document.getElementById("loadingSpinner").style.display = "flex";
 
   fetch(`${backendURL}/predict`, {
     method: "POST",
@@ -52,47 +136,43 @@ function predictPrice() {
       ram: ram
     })
   })
-  .then(response => response.json())
-  .then(data => {
-    // Show tier in resultBox
-    const resultBox = document.getElementById("resultBox");
-    const resultText = document.getElementById("result");
-    const revealBtn = document.getElementById("revealBtn");
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("loadingSpinner").style.display = "none"; // ❌ Hide Spinner
 
-    resultText.innerHTML = `<strong>Predicted Price Range:</strong> ${data.predicted_price_range}`;
-    // Show upgrade suggestion if available
-    const upgradeTipBox = document.getElementById("upgradeTipBox");
-    const upgradeTip = document.getElementById("upgradeTip");
+      // ... existing logic ...
+      const resultBox = document.getElementById("resultBox");
+      const resultText = document.getElementById("result");
+      const revealBtn = document.getElementById("revealBtn");
 
-    if (data.upgrade_tip) {
-      // Keep line breaks
-      upgradeTip.innerHTML = `<span style="white-space: pre-line;">💡 ${data.upgrade_tip}</span>`;
-      upgradeTipBox.style.display = "block";
-    
-      latestSuggestion = null; // No single upgrade to apply anymore
-    } else {
-      upgradeTipBox.style.display = "none";
-      latestSuggestion = null;
-    }
-    
-    resultBox.style.display = "block";
-    revealBtn.style.display = "inline-block";
+      resultText.innerHTML = `<strong>Predicted Price Range:</strong> ${data.predicted_price_range}`;
+      const upgradeTipBox = document.getElementById("upgradeTipBox");
+      const upgradeTip = document.getElementById("upgradeTip");
 
-    // Store full response
-    latestData = data;
+      if (data.upgrade_tip) {
+        upgradeTip.innerHTML = `<span style="white-space: pre-line;">💡 ${data.upgrade_tip}</span>`;
+        upgradeTipBox.style.display = "block";
+      } else {
+        upgradeTipBox.style.display = "none";
+      }
 
-    // Reset market cards if they were shown before
-    document.getElementById("marketSection").classList.add("hidden");
-    document.querySelectorAll('.market-card').forEach(card => {
-      card.innerHTML = "";
-      card.classList.remove("flip-in");
+      resultBox.style.display = "block";
+      revealBtn.style.display = "inline-block";
+      latestData = data;
+
+      document.getElementById("marketSection").classList.add("hidden");
+      document.querySelectorAll('.market-card').forEach(card => {
+        card.innerHTML = "";
+        card.classList.remove("flip-in");
+      });
+    })
+    .catch(error => {
+      console.error("Prediction error:", error);
+      document.getElementById("loadingSpinner").style.display = "none"; // ❌ Hide Spinner on error
+      document.getElementById("result").innerText = "Something went wrong.";
     });
-  })
-  .catch(error => {
-    console.error("Prediction error:", error);
-    document.getElementById("result").innerText = "Something went wrong.";
-  });
 }
+
 
 function revealMarket() {
     if (!latestData || !latestData.market_examples) return;
