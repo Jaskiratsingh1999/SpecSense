@@ -29,9 +29,13 @@
       <input type="range" id="ram" min="256" max="3998" value="2048" oninput="updateValue(this)" />
 
       <div class="tooltip-container">
-        <button id="predictBtn" onclick="predictPrice()">⚡ Predict Tier</button>
+        <button id="predictBtn" onclick="predictPrice()">
+          <span class="btn-text">⚡ Predict Tier</span>
+          <span class="btn-spinner" id="btnSpinner"></span>
+        </button>
         <span id="tooltipText" class="tooltip-text">Please complete all fields</span>
       </div>
+      
       
       <!-- 🧠 Prediction Result -->
       <div id="resultBox" class="fade-in" style="display: none;">
@@ -68,13 +72,6 @@
       
       <button onclick="closeModal()">OK</button>
     </div>
-  </div>
-
-
-    <!-- 🌀 Loading Spinner -->
-  <div id="loadingSpinner" class="spinner-overlay" style="display: none;">
-    <div class="spinner"></div>
-    <p>Predicting... please wait</p>
   </div>
 
   <script src="script.js"></script>
