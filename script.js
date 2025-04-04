@@ -35,9 +35,12 @@ function predictPrice() {
     return;
   }
 
-  
+  const backendURL =
+  window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+    ? "http://127.0.0.1:5000"
+    : "https://specsense.onrender.com";    
 
-  fetch("http://127.0.0.1:5000/predict", {
+  fetch(`${backendURL}/predict`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
