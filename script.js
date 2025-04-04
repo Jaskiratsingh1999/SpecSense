@@ -95,7 +95,7 @@ function predictPrice() {
   })
   .finally(() => {
     predictBtn.classList.remove("loading");
-    btnText.textContent = "⚡ Predict Tier";});
+  });
 }
 
 
